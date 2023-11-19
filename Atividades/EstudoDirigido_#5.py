@@ -1,7 +1,7 @@
 import socket, os
 PORT = 80
 
-# Função para obter o nome do arquivo a partir da url
+# Obtem o nome do arquivo
 def obter_nome_arquivo(url):
     UrlDividida = url.split('/')
     return UrlDividida[-1]
@@ -9,13 +9,13 @@ def obter_nome_arquivo(url):
 try:
     UrlCompleta = input("Digite a URL completa da imagem: ")
 
-    # Separa o host e a imagem
+    # Separa a imagem e host
     UrlPartes = UrlCompleta.split('//')
     UrlHost = UrlPartes[1].split('/')[0]
     UrlImagem = '/' + '/'.join(UrlPartes[1].split('/')[1:])
 
     Arquivo = obter_nome_arquivo(UrlCompleta)
-    # Aqui garante que o final do arquivo não venha sem uma formatação adequada
+    # Garante que o arquivo venha no formato correto de imagem
     if '.' not in Arquivo or Arquivo.split('.')[-1] not in ['png', 'jpg', 'jpeg']:
         Arquivo += '.png'
 
@@ -40,7 +40,7 @@ try:
         if len(ContentLenghtMatch) > 1:
             ContentLenght = int(ContentLenghtMatch[1].split()[0])
 
-        # Verifica se todos os dados foram recebidos
+        # Verifica se foi recebido corretamente
         if ContentLenght is not None and len(Imagem) >= ContentLenght:
             break
     SocketImage.close()
