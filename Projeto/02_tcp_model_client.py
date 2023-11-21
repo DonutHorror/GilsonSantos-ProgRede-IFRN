@@ -29,7 +29,9 @@ def HostTryConnection(SERVER):
     
 def HostMessageSend(CODE_PAGE):
     Message = input("Digite uma mensagem: ")
-    if Message == "!EXIT": exit()
+    if Message == "!EXIT": 
+        tcp_socket.close()
+        exit()
     try: 
         Message = Message.encode(CODE_PAGE)
         tcp_socket.send(Message)
