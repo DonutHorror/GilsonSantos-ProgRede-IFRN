@@ -3,7 +3,6 @@ from socket_constants import *
 
 # Valores
 ONLINE = False
-EXITREQUEST = False
 SERVER = HOST_SERVER, SOCKET_PORT
 
 def GetHostInfo():
@@ -14,27 +13,33 @@ def GetHostInfo():
     return HostInfo
 
 def HostTryConnection(SERVER):
+    os.system('cls' if os.name == 'nt' else 'clear')
     while True:
         try:
             tcp_socket.connect((SERVER))
         except ConnectionRefusedError:
             print(f"Server Offline... Tentando reconexão em 10 segundos...")
             time.sleep(10)
-            continue
+            continue            
         else:
+            print("Server Online... Conexão com sucesso...")
+            time.sleep(5)
             break
-
-def HostMessageSend():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    
+def HostMessageSend(CODE_PAGE):
     Message = input("Digite uma mensagem: ")
+    if Message == "!EXIT": exit()
     try: 
         Message = Message.encode(CODE_PAGE)
         tcp_socket.send(Message)
-    except WindowsError:
-        pass
-    
+        os.system('cls' if os.name == 'nt' else 'clear')
+    except socket.error as message:
+        print("A mensagem não pode ser enviada. Tente denovo ou termine a conexão...")
+        time.sleep(5)
+        os.system('cls' if os.name == 'nt' else 'clear')
 
-    
-
+HostInf = GetHostInfo()    
 # Ligar 
 while True:
     State = input("Conectarse ao servidor? [YES/NO]\n").upper()
@@ -43,11 +48,25 @@ while True:
     continue
 ONLINE = True
 
+# Cria um socket e uma Thread para tentar se conectar com o servidor
 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-ConnectionThread = threading.Thread(target = HostTryConnection, args = [(SERVER)]).start()
+ConnectionThread = threading.Thread(target = HostTryConnection, args = [(SERVER)], daemon= True).start()
+
+# Maneira EXTREMAMENTE INEFICIENTE de checar se a conexão foi estavalecida já que eu não sei como threads retornam valores
+while True:
+    try:
+        Ping = "Ping"
+        Ping = Ping.encode(CODE_PAGE)
+        tcp_socket.send(Ping)  
+        break
+    except:   
+        time.sleep(10)
+        continue
 
 while True:
-    HostMessageSend()
+    print("Digite [!EXIT] para terminar a conexão")
+    HostMessageSend(CODE_PAGE)
+
 
 
 
