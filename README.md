@@ -1,39 +1,77 @@
-PROJETO DESIGNADO A MATÉRIA DE PROGRAMAÇÃO PARA REDES - IFRN (CRIANDO UMA APLICAÇÃO CLIENTE/SERVIDOR)
+# Aplicação Cliente/Servidor - Programação para Redes (IFRN)
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-* TIPOS DE SOCKET:
-  > Utiliza sockets TCP na comunicação cliente - servidor, por serem orientados a conexão e garantirem a ordem dos pacotes, serem considerados confiáveis e sem perda.
+Este projeto implementa uma aplicação cliente/servidor
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-* SOBRE O CLIENTE:
-  > O projeto tem como objetivo criar um programa, que por meio de sockets TCP, estabeleça uma conexão cliente -> <- servidor.
-  
-  > Uma vez executado o programa, o cliente fornece o nome do usuário logado, o nome do host e e seu ip, e logo em seguida é executado em segundo plano deixando o terminal livre para o usuário.
-  
-  > O cliente não permite que uma segunda instância seja carregada em sua memória, e o mesmo pode optar por se remover da memória de maneira voluntária.
-  
-  > Caso o servidor se encontre off-line, o cliente rodará em segundo plano enquanto faz testes a cada tempo pré determinado se o servidor voltou a ficar on-line.
-  
-  > Enquanto estiver na memória o agente irá responder a requisições oriundas do servidor.
+## Funções do Programa
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-* SOBRE O SERVIDOR:
-  > O servidor permite conexões simultâneas de vários clientes usando um socket TCP, gerenciando as conexões ativas e verificando quando um cliente fica offline.
-  
-  > Assim como o cliente, o servidor possui uma opção para ser removido da memória se desejado.
-  
-  > Não permite que uma segunda instância seja carregada na memória.
-  
-  > É executado em segundo plano, e deixa o terminal livre para o usuário.
-  
-  > O servidor executará comandos por meio de um bot no Telegram, sendo eles:
-  
-  		'/listclient' --> lista os agentes online e retorna informações como IP, HOSTNAME, usuário logado e tempo que o mesmo está online.
+### Cliente (Agente)
 
-  		'/historic'   --> mostra o histórico de navegação em diferentes navegadores, funciona em clientes sendo executados tanto no windowns quanto no linux.
-  
-  		'/info-u'     --> mostra informações detalhadas do usuário logado (UID, grupo principal/secundários, shell padrão, etc.)
-  
-  		'/info-p'     --> mostra lista dos programas instalados no servidor, funciona em clientes sendo executados tanto no windowns quanto no linux.
-  
-  		'/info-h'     --> mostra as informações do hardware de onde está sendo executado.
+1. **Conexão:**
+   - A conexão entre o cliente e o servidor é estabelecida através de sockets TCP 
+
+2. **Registro Online:**
+   - Ao ser executado, o cliente informa ao servidor que está online, fornecendo o nome do HOST, seu IP e o usuário logado.
+
+3. **Execução em Segundo Plano:**
+   - O cliente é executado em segundo plano, liberando o terminal para o usuário.
+
+4. **Verificação de Servidor Online:**
+   - Se o servidor estiver offline, o cliente fica em segundo plano, testando a um tempo pré-determinado se o servidor voltou a ficar online.
+
+5. **Controle de Instâncias:**
+   - O cliente não permite que uma segunda instância seja carregada na memória.
+
+6. **Remoção da Memória Manualmente:**
+   - O cliente possui uma opção para se remover da memória manualmente.
+
+7. **Resposta a Requisições do Servidor:**
+   - O cliente responde a requisições oriundas do servidor enquanto está na memória.
+
+### Servidor
+
+1. **Conexão:**
+   - O servidor permite conexões simultâneas de vários clientes (agentes) usando um socket TCP.
+
+2. **Gerenciamento de Conexões:**
+   - O servidor gerencia as conexões ativas e detecta quando um cliente fica offline.
+
+3. **Execução em Segundo Plano:**
+   - O servidor é executado em segundo plano, liberando o terminal para o usuário.
+
+4. **Controle de Instâncias:**
+   - O servidor não permite que uma segunda instância seja carregada na memória.
+
+5. **Remoção da Memória Manualmente:**
+   - O servidor possui uma opção para se remover da memória manualmente.
+
+6. **Comandos do BOT no Telegram:**
+   - Implementação de comandos via bot no Telegram para:
+     - Informações do hardware onde o servidor está sendo executado.
+       ```
+       ====================== /info-h =======================
+       ```
+     - Lista de programas instalados no servidor.
+       ```
+       ====================== /info-p =======================
+       ```
+     - Histórico de navegação em diferentes navegadores.
+       ```
+       ====================== /historic ======================
+       ```
+     - Informações detalhadas do usuário logado.
+       ```
+       ====================== /info-u =======================
+       ```
+     - Lista dos agentes online com informações básicas.
+       ```
+       ====================== /listclient =====================
+       ```
+
+## Tipos de Sockets 
+
+- **Tipo de Socket:**
+  - Utiliza socket TCP no servidor para garantir controle de transmissão.
+
+---
+
+*Gilson dos Santos*
