@@ -2,8 +2,6 @@ import socket
 import threading
 from socket_constants import *
 
-print('Recebendo Mensagens...\n\n')
-
 # Criando o socket TCP
 Server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -38,4 +36,19 @@ def HandleClient(client, BUFFER_SIZE, CODE_PAGE):
          Broadcast(f'{User} se desconectou!'.encode(CODE_PAGE))
          Usernames.remove(User)
          break
+
+def ReceiveConnection(CODE_PAGE):
+   while True:
+      print('Recebendo Mensagens...\n\n')
+      client, address = Server.accept()
+      print(f'Conexão com sucesso com {str(address)}')
+      client.send('Username?'.encode(CODE_PAGE))
+      User = client.recv(1024)
+      Usernames.append(User)
+      Clients.append(client)
+      print(f'O username desse cliente é {User}'.encode(CODE_PAGE))
+      Broadcast(f'{User} entrou no server!'.encode(CODE_PAGE))
+      client.send('Você está conectado!'.encode(CODE_PAGE))
+      thread = threading.Thread(target=HandleClient, args=(client,))
+      thread.start()
       
