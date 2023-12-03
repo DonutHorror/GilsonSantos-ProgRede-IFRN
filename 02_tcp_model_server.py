@@ -21,11 +21,11 @@ def Broadcast(Message):
       client.send(Message)
    
 # Função para lidar com as mensagens do cliente
-def HandleClient(client, BUFFER_SIZE, CODE_PAGE):
+def HandleClient(client):
    while True:
       # Recebe a mensagem do cliente e depois envia ela em broadcast para todos os usuarios conectados
       try:
-         message = client.recv(BUFFER_SIZE)
+         message = client.recv(512)
          Broadcast(message)
       # Fecha a Thread e remove o client e seu usuario das listas do server
       except:
@@ -33,22 +33,24 @@ def HandleClient(client, BUFFER_SIZE, CODE_PAGE):
          Clients.remove(client)
          client.close()
          User = Usernames[index]
-         Broadcast(f'{User} se desconectou!'.encode(CODE_PAGE))
+         Broadcast(f'{User} se desconectou!'.encode('utf-8'))
          Usernames.remove(User)
          break
 
-def ReceiveConnection(CODE_PAGE):
+# Função principal para lidar com conexão de novos clientes e criação de threads
+def ReceiveConnection():
    while True:
       print('Recebendo Mensagens...\n\n')
       client, address = Server.accept()
       print(f'Conexão com sucesso com {str(address)}')
-      client.send('Username?'.encode(CODE_PAGE))
-      User = client.recv(1024)
+      client.send('Username?'.encode('utf-8'))
+      User = client.recv(512)
       Usernames.append(User)
       Clients.append(client)
-      print(f'O username desse cliente é {User}'.encode(CODE_PAGE))
-      Broadcast(f'{User} entrou no server!'.encode(CODE_PAGE))
-      client.send('Você está conectado!'.encode(CODE_PAGE))
+      print(f'O username desse cliente é {User}'.encode('utf-8'))
+      Broadcast(f'{User} entrou no server!'.encode('utf-8'))
+      client.send('Você está conectado!'.encode('utf-8'))
       thread = threading.Thread(target=HandleClient, args=(client,))
       thread.start()
       
+ReceiveConnection()
