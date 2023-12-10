@@ -48,9 +48,9 @@ def ReceiveConnection():
       Usernames.append(User)
       Clients.append(client)
       print(f'O username desse cliente é {User}'.encode('utf-8'))
-      Broadcast(f'{User} entrou no server!'.encode('utf-8'))
+      Broadcast(f'{User} entrou no server!'.encode('utf-8')) 
       client.send('Você está conectado!'.encode('utf-8'))
-      thread = threading.Thread(target=HandleClient, args=(client,))
+      thread = threading.Thread(target=HandleClient, args=(client))
       thread.start()
       
 ReceiveConnection()
